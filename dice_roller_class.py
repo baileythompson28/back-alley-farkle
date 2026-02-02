@@ -55,3 +55,14 @@ class DiceRoller:
                 print(self.dice_art.get(die)[line], end="")
             print()
 
+    def determine_ba_farkle_points(self):
+        if len(set(self.values)) == 1:
+            return 500
+        score = 0
+        for val in self.values:
+            if val == 5:
+                score += 50
+            elif val == 1:
+                score += 100
+        return score
+
