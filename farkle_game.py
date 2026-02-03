@@ -16,7 +16,7 @@ def ask_user():
 
 def play_round(player, dice):
     score = 0
-    print(f"{player.name}, your turn!")
+    print(f"\n{player.name}, your turn!")
     #start loop here
     round_over = False
     while not round_over:
@@ -32,7 +32,7 @@ def play_round(player, dice):
             round_over = True
         else:
             score += round_points
-            keep_going = input("Would you like to keep going (y/n): ").lower()
+            keep_going = input("\nWould you like to keep going (y/n): ").lower()
             if keep_going != "y":
                 round_over = True
     return score
@@ -52,8 +52,14 @@ def main(num_players=2, points_to_play_to=1000):
             player.score += play_round(player, dice)
             if player.score >= points_to_play_to:
                 found_winner = True
-    #determine who won and say it
-    
+    high_score = 0
+    winner = None
+    for player in players:
+        if player.score > high_score:
+            high_score = player.score
+            winner = player
+    print(f"\n *The winner is {winner.name} with a score of {winner.score}!*")
+
 
 if __name__ == "__main__":
     ask_user()
