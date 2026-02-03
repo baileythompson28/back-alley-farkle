@@ -5,6 +5,7 @@ class Player:
         self.name = name
         self.score = score
 
+
 def ask_user():
     """asks the user how many players & how many points they are playing to"""
     num_players = int(input("How many players are playing? "))
@@ -12,19 +13,28 @@ def ask_user():
     print(f"\nStarting game with {num_players} players, Playing till {points_to_play_to} points.")
     main(num_players, points_to_play_to)
 
+
 def play_round(player, dice):
-    #has the player roll until they choose to stop or farkle
     score = 0
     print(f"{player.name}, your turn!")
     #start loop here
-    dice.roll()
-    dice.print_dice()
-    print(f"Score this roll: {dice.determine_ba_farkle_points()}")
-    input()
-    #there's more to happen here
-    #check for farkle, if farkle, score = 0 exit loop
-    #if not farkle, ask if user wants to roll again to add to score
-    # if not, stop, send back total score. 
+    round_over = False
+    while not round_over:
+        dice.roll()
+        dice.print_dice()
+        round_points = dice.determine_ba_farkle_points()
+        full_round_points = score+round_points if round_points > 0 else 0
+        print(f"Score this roll: {round_points}, for a total score of {full_round_points} this round" +
+              f" which would give you a total score of {player.score + full_round_points}")
+        if round_points == 0:
+            print("You farkled!")
+            score = 0
+            round_over = True
+        else:
+            score += round_points
+            keep_going = input("Would you like to keep going (y/n): ").lower()
+            if keep_going != "y":
+                round_over = True
     return score
     
 
@@ -38,13 +48,12 @@ def main(num_players=2, points_to_play_to=1000):
     found_winner = False
 
     while not found_winner:
-        #player a round:
         for player in players:
             player.score += play_round(player, dice)
             if player.score >= points_to_play_to:
                 found_winner = True
     #determine who won and say it
-
+    
 
 if __name__ == "__main__":
     ask_user()
